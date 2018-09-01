@@ -1,3 +1,4 @@
+# 开发环境
 """
 Django settings for meiduo_mall project.
 
