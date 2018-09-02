@@ -26,7 +26,9 @@ SECRET_KEY = 'qttj2wrv1mm)2gtq2yjj^8z2*_afmql7#ka(u-%d9^4!r0h-+a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# 允许哪些域名访问django
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.meiduo.site', 'api.meiduo.site']
 
 
 # Application definition
@@ -40,11 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'corsheaders',
 
     'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
+    # 放在中间件最外层的原因：跨域的问题需要在请求一开始就得到解决，所以需要优先执行，而中间件在处理请求时自上而下
+    'corsheaders.middleware.CorsMiddleware',  # 最外层的中间件
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -202,5 +207,16 @@ REST_FRAMEWORK = {
     # 异常处理
     'EXCEPTION_HANDLER': 'meiduo_mall.utils.exceptions.exception_handler',
 }
-
+# 指定默认的用户模型类
+# 注意点：语法规则必须是'应用名.用户模型类'
+# 注意点：由于指定用户模型类的规则限制。所以在注册users应用时，必须从'users.apps.UsersConfig'开始
 AUTH_USER_MODEL = 'users.User'
+
+# CORS:白名单
+CORS_ORIGIN_WHITELIST = (
+    '127.0.0.1:8080',
+    'localhost:8080',
+    'www.meiduo.site:8080',
+    'api.meiduo.site:8000',
+)
+CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
