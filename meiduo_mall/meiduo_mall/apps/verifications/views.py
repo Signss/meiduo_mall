@@ -1,4 +1,4 @@
-import random
+import random, logging
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,6 +8,7 @@ from . import contations
 from meiduo_mall.libs.yuntongxun.sms import CPP
 from celery_tasks.sms.tasks import send_sms_code
 
+logger = logging.getLogger('django')
 
 class SMSCodeView(APIView):
     """
@@ -23,6 +24,7 @@ class SMSCodeView(APIView):
             return Response({'message': '发送短信过于频繁'}, status=status.HTTP_400_BAD_REQUEST)
         # 生成短信验证码
         sms_code = '%06d' % random.randint(0, 999999)
+        logger.info(sms_code)
         # 把短信验证码存储到Redis
         # redis_conn.setex('key', '过期时间', 'value')
         # pipeline

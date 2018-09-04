@@ -1,6 +1,7 @@
 from rest_framework import serializers
 import re
 from django_redis import get_redis_connection
+from rest_framework_jwt.settings import api_settings
 
 from .models import User
 
@@ -11,7 +12,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(label='确认密码', write_only=True)
     sms_code = serializers.CharField(label='短信验证码', write_only=True)
     allow = serializers.CharField(label='同意协议', write_only=True)
-
+    # 指定非django自带的token值序列化输出
+    token = serializers.CharField(label='鉴权token值', read_only=True)
 
     class Meta:
         model = User
@@ -20,7 +22,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         # 模型以外字段：'password2', 'sms_code', 'allow'
         # 输入字段(write_only)：'username', 'mobile', 'password', 'password2', 'sms_code', 'allow'
         # 输出字段(read_only)：'id', 'username', 'mobile'
-        fields = ['id', 'username', 'mobile', 'password', 'password2', 'sms_code', 'allow']
+        fields = ['id', 'username', 'mobile', 'password', 'password2', 'sms_code', 'allow', 'token']
 
         # 给username和password指定额外参数
         extra_kwargs = {
@@ -87,7 +89,13 @@ class CreateUserSerializer(serializers.ModelSerializer):
         # 调用django的认证系统加密
         user.set_password(validated_data['password'])
         user.save()
-
+        # 提供了手动签发JWT的方法
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+        payload = jwt_payload_handler(user)
+        token = jwt_encode_handler(payload)
+        # token值作为添加属性不保存在数据库进行序列化
+        user.token = token
         # 响应数据
         return user
 
