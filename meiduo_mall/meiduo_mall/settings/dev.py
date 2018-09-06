@@ -231,3 +231,7 @@ CORS_ORIGIN_WHITELIST = (
     'api.meiduo.site:8000',
 )
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
+# 配置重写的认证方法实现多账号登陆
+AUTHENTICATION_BACKENDS = [
+    'users.utils.AuthModelBackend',
+]

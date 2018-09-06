@@ -32,7 +32,7 @@ class SMSCodeView(APIView):
         pl.setex('sms_%s' % mobile, contations.SMS_CODE_EXPIRE_TIME, sms_code)
         # 发送短信验证码
         # CPP().send_sms_code(mobile, [sms_code, contations.SMS_CODE_EXPIRE_TIME//60], 1)
-        send_sms_code.delay(mobile, sms_code)
+        # send_sms_code.delay(mobile, sms_code)
         # 设置短信已发发送的标志flag_send，只要标志存在不在发短信
         pl.setex('flag_%s' % mobile, contations.SEND_SMS_CODE_INTERVAL, 1)
         pl.execute()
