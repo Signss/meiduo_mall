@@ -17,12 +17,21 @@ def get_user_by_count(account):
     :param account: 账号，可以是用户名可以是手机号
     :return: User对象或者None
     """
+    # try:
+    #     if re.match(r'^1[3-9]\d{9}', account):
+    #         # 账号为手机
+    #         user = User.objects.get(mobile=account)
+    #     else:
+    #         # 账号为用户名
+    #         user = User.objects.get(username=account)
+    # except User.DoesNotExist:
+    #     return None
+    # else:
+    #     return user
     try:
         if re.match(r'^1[3-9]\d{9}', account):
-            # 账号为手机
             user = User.objects.get(mobile=account)
         else:
-            # 账号为用户名
             user = User.objects.get(username=account)
     except User.DoesNotExist:
         return None
@@ -34,6 +43,10 @@ def get_user_by_count(account):
 class AuthModelBackend(ModelBackend):
 
     # 重写认证方法
+    # def authenticate(self, request, username=None, password=None, **kwargs):
+    #     user = get_user_by_count(username)
+    #     if user and user.check_password(password):
+    #         return user
     def authenticate(self, request, username=None, password=None, **kwargs):
         user = get_user_by_count(username)
         if user and user.check_password(password):
