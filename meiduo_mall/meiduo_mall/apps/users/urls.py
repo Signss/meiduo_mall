@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^user/$', views.UserDetailView.as_view()),
     # 设置邮箱
     url(r'^email/$', views.UserEmailView.as_view()),
+    # 验证邮箱链接
+    url(r'^emails/verification/$', views.VerifyEmailView.as_view()),
 ]
