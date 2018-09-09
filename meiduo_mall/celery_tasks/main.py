@@ -12,4 +12,4 @@ celery_app = Celery('mei_duo')
 # 加载celery配置：可以得到任务队列的位置
 celery_app.config_from_object('celery_tasks.config')
 # 注册celery任务
-celery_app.autodiscover_tasks(['celery_tasks.sms'])
+celery_app.autodiscover_tasks(['celery_tasks.sms', 'celery_tasks.email'])

@@ -23,5 +23,7 @@ urlpatterns = [
     #　用户
     url(r'^', include('users.urls')),
     # qq登录用户
-    url(r'^oauth/', include('oauth.urls'))
+    url(r'^oauth/', include('oauth.urls')),
+    # 行政区划分
+    url(r'^', include('areas.urls'))
 ]
