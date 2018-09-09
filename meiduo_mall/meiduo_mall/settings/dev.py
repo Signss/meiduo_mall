@@ -42,9 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'corsheaders',
+    'corsheaders', # 跨域请求
 
-    'users.apps.UsersConfig',
+    'users.apps.UsersConfig', # 用户
+    'oauth.apps.OauthConfig', # QQ登录用户
 ]
 
 MIDDLEWARE = [
