@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig', # 用户
     'oauth.apps.OauthConfig', # QQ登录用户
+    'areas.apps.AreasConfig', # 行政区划分
 ]
 
 MIDDLEWARE = [
