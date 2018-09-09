@@ -18,6 +18,10 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'', include('verifications.urls')),
-    url(r'', include('users.urls'))
+    # 发送验证码
+    url(r'^', include('verifications.urls')),
+    #　用户
+    url(r'^', include('users.urls')),
+    # qq登录用户
+    url(r'^oauth/', include('oauth.urls'))
 ]
