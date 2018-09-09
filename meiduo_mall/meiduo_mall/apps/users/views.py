@@ -1,9 +1,9 @@
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import CreateUserSerializer, UserDetailSerializer
+from .serializers import CreateUserSerializer, UserDetailSerializer, EmailSerializer
 from .models import User
 
 # Create your views here.
@@ -53,10 +53,18 @@ class UserDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     # 因为没有传入id
-    def get_object(self):
+    def get_object(self, *args, **kwargs):
         return self.request.user
 
 
+# 保存email
+class UserEmailView(UpdateAPIView):
+    serializer_class = EmailSerializer
+    permission_classes = [IsAuthenticated]
+
+    # 因为没有传入id
+    def get_object(self, *args, **kwargs):
+        return self.request.user
 
 
 
