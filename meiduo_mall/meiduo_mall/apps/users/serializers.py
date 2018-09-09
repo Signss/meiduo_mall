@@ -100,6 +100,34 @@ class CreateUserSerializer(serializers.ModelSerializer):
         return user
 
 
+# 用户个体中心
+class UserDetailSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = User
+        fields = ('id', 'mobile', 'username', 'email', 'email_active')
+
+
+# 邮箱序列化器
+class EmailSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = User
+        fields = ('id','email')
+        extra_kwargs = {
+            'email': {
+                'required': True
+            }
+        }
+
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email')
+        instance.save()
+        return instance
+
+
 
 
 

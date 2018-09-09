@@ -1,8 +1,9 @@
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
-from .serializers import CreateUserSerializer
+from .serializers import CreateUserSerializer, UserDetailSerializer
 from .models import User
 
 # Create your views here.
@@ -44,4 +45,18 @@ class UsernameCountView(APIView):
 
         # 响应数据
         return Response(data)
+
+
+# 用户个人中心
+class UserDetailView(RetrieveAPIView):
+    serializer_class = UserDetailSerializer
+    permission_classes = [IsAuthenticated]
+
+    # 因为没有传入id
+    def get_object(self):
+        return self.request.user
+
+
+
+
 
